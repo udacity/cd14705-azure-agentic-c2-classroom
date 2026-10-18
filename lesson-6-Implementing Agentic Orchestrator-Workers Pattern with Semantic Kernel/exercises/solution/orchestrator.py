@@ -17,6 +17,8 @@ from semantic_kernel.agents.runtime import InProcessRuntime
 load_dotenv()
 api_key = os.getenv("AZURE_OPENAI_KEY")
 url = os.getenv("URL")
+if not api_key or not url:
+    raise ValueError("Missing AZURE_OPENAI_KEY or URL: copy .env.template in the course root folder to .env and fill in both values.")
 api_version = "2024-12-01-preview"
 
 # -----------------
@@ -28,9 +30,9 @@ target_industry = "avaiation"
 # Define Azure Chat Completion Service
 # -----------------
 chat_service = AzureChatCompletion(
-    deployment_name="none",
+    deployment_name="gpt-4.1-mini",
     api_key=api_key,
-    base_url=url,
+    endpoint=url.split("/openai/")[0],  # keep only the resource root, e.g. https://<resource-name>.openai.azure.com
     api_version=api_version,
 )
 
@@ -150,7 +152,7 @@ async def main():
     )
 
     plan = ""
-    async for msg in orchestrator.invoke(task=plan_prompt, runtime=runtime):
+    async for msg in orchestrator.invoke(messages=plan_prompt):
         plan += str(msg)
 
     print("\n=== Execution Plan ===")

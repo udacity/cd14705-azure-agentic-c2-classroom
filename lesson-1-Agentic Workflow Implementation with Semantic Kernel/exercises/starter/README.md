@@ -30,10 +30,10 @@ pip install semantic-kernel python-dotenv
 ```
 
 ### Environment Setup
-Create a `.env` file in your project root with the following variables:
+Copy `.env.template` in the course root folder (`cd14705-azure-agentic-c2-classroom`; in the Udacity workspace, `/workspace/cd14705-azure-agentic-c2-classroom`) to a new file named `.env` in that same folder, and fill in your key and your resource's Azure OpenAI endpoint (not the project endpoint that ends in `/api/projects/...`). Every demo, exercise and the project reads this one file:
 ```
 AZURE_OPENAI_KEY=your_azure_openai_api_key
-URL=your_azure_openai_endpoint_url
+URL=https://<resource-name>.openai.azure.com/
 ```
 
 ## Getting Started

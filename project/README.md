@@ -8,7 +8,7 @@ Before writing any code, you must deploy the AI model on Microsoft Azure and con
 
 ### **Step 1: Deploy Your Model on Azure**
 
-First, you need to create an Azure AI Foundry resource and deploy a gpt-4.1 model.
+First, you need a Microsoft Foundry resource (formerly Azure AI Foundry) with a gpt-4.1-mini model deployment. If you already created them for the lessons, reuse them and go to Step 2.
 
 1. **Log into the Microsoft Azure Portal** using the credentials provided to you. It's recommended to use an incognito or private browser window.  
 2. From the Azure portal home page, click on **\+ Create a resource** and search the Marketplace for Azure AI Foundry.  
@@ -16,20 +16,22 @@ First, you need to create an Azure AI Foundry resource and deploy a gpt-4.1 mode
 4. On the configuration page, use your existing subscription and resource group. Provide a **unique name** for your new resource.  
 5. Proceed through the "Network," "Identity," and "Tags" tabs. On the **Review \+ submit** tab, click **Create**.  
 6. Once the deployment is complete (this may take several minutes), navigate to the newly created resource page.  
-7. From your resource's overview page, click on **Go to Azure AI Foundry portal**. This will open the Azure AI Studio.  
+7. From your resource's overview page, click on **Go to Azure AI Foundry portal**.  
 8. In the left-hand navigation menu, go to **Models \+ endpoints**.  
-9. Click **\+ Deploy model** and select **Deploy a base model**. From the model list, choose **gpt-4.1** and click **Confirm**.  
+9. Click **\+ Deploy model** and select **Deploy a base model**. From the model list, choose **gpt-4.1-mini** and click **Confirm**. Keep the deployment name `gpt-4.1-mini`, which the code uses. If the deployment reports no available quota, create the resource in another region: model availability differs by region.  
 10. Review the configuration and click **Create and deploy**.  
-11. Once the deployment succeeds, you will be directed to the endpoint's detail page. Here, you will find the **Endpoint URL** and the authentication **Key**. Keep these two values safe, as you will need them in the next step.
+11. Once the deployment succeeds, you will be directed to the endpoint's detail page. Here, you will find the **Endpoint URL** and the authentication **Key**. Keep these two values safe, as you will need them in the next step. The code uses only the part of the endpoint before `/openai/`, for example `https://<resource-name>.openai.azure.com`. Use the Azure OpenAI endpoint, not the project endpoint that ends in `/api/projects/...`; the key and this endpoint are also listed on the resource's **Keys and Endpoint** page in the Azure portal.
 
 ### **Step 2: Configure Your Local Environment**
 
 Now, connect your Python script to the model you just deployed.
 
-1. In your project's root directory, create a new file named .env.  
-2. Add the following two lines to this file, replacing the placeholder text with the credentials you obtained from the Azure portal:  
-   AZURE_OPENAI_KEY=YOUR_KEY_HERE  
-   URL=https://YOUR-ENDPOINT-URL-HERE/
+1. In the course root folder (`cd14705-azure-agentic-c2-classroom`), copy `.env.template` to a new file named `.env`. If you already created it for the lessons, reuse it. In the Udacity workspace, run `cp /workspace/cd14705-azure-agentic-c2-classroom/.env.template /workspace/cd14705-azure-agentic-c2-classroom/.env` in a terminal, then open the file with **File > Open File...**.  
+2. Fill in both values in `.env` with the key and the Azure OpenAI endpoint from Step 1:  
+   ```text
+   AZURE_OPENAI_KEY=YOUR_KEY_HERE
+   URL=https://<resource-name>.openai.azure.com/
+   ```
 3. Ensure that load_dotenv() is called at the beginning of your Python script to load these secrets into your environment.
 
 ## **Part 2: Coding the Agentic Workflow**
@@ -44,7 +46,7 @@ First, ensure all necessary libraries are imported and that the Semantic Kernel 
 2. **Initialize Kernel:** Find the \<TODO: KERNEL\> block. Here, you must:  
 
 - Initialize the Kernel.  
-- Define the AzureChatCompletion service, passing your API_KEY, BASE_URL, and an API_VERSION of "2024-05-01-preview".  
+- Define the AzureChatCompletion service, passing `deployment_name="gpt-4.1-mini"`, `api_key=API_KEY`, `endpoint=BASE_URL.split("/openai/")[0]` (the resource root, as in the lessons) and an API_VERSION of "2024-12-01-preview".  
 - Add the chat service to the kernel instance.
 
 ### **Step 4: Implement Supporting Logic (Helper Functions)**

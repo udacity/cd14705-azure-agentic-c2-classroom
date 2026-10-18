@@ -13,6 +13,8 @@ from semantic_kernel.functions import <TODO> # import Kernel Arguments
 load_dotenv()
 AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
 BASE_URL = os.getenv("URL")
+if not AZURE_OPENAI_KEY or not BASE_URL:
+    raise ValueError("Missing AZURE_OPENAI_KEY or URL: copy .env.template in the course root folder to .env and fill in both values.")
 API_VERSION = "2024-12-01-preview"
 DEPLOYMENT = <TODO> # define the correct LLM deployment
 
@@ -23,7 +25,7 @@ kernel = <TODO> # initialize the kernel
 chat_service = <TODO>( # define the correct chat service object
     deployment_name=DEPLOYMENT,
     api_key=AZURE_OPENAI_KEY,
-    base_url=f"{BASE_URL}{DEPLOYMENT}",
+    endpoint=BASE_URL.split("/openai/")[0],  # keep only the resource root, e.g. https://<resource-name>.openai.azure.com
     api_version=API_VERSION
 )
 kernel.add_service(<TODO>) # add the chat service to the kernel
