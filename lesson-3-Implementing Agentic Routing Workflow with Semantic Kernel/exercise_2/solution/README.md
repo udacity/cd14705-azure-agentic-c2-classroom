@@ -33,9 +33,9 @@ This demonstrates how to combine **rule-based orchestration** with **Semantic Ke
 - Familiarity with async/await in Python  
 
 ### Dependencies
-Install the required packages:
+From the course root folder (`cd14705-azure-agentic-c2-classroom`), install the packages at the versions this code is written for:
 
-pip install semantic-kernel python-dotenv numpy
+pip install -r requirements.txt
 
 ### Environment Setup
 

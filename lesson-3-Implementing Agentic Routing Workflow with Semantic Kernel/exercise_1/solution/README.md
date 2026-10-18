@@ -33,9 +33,9 @@ This demonstrates how to chain agents together and enforce strict domain boundar
 - Basic understanding of async/await in Python
 
 ### Dependencies
-Install the required packages:
+From the course root folder (`cd14705-azure-agentic-c2-classroom`), install the packages at the versions this code is written for:
 
-- pip install semantic-kernel python-dotenv
+- pip install -r requirements.txt
 - Environment Setup
   - Copy `.env.template` in the course root folder (`cd14705-azure-agentic-c2-classroom`; in the Udacity workspace, `/workspace/cd14705-azure-agentic-c2-classroom`) to a new file named `.env` in that same folder, and fill in your key and your resource's Azure OpenAI endpoint (not the project endpoint that ends in `/api/projects/...`). Every demo, exercise and the project reads this one file:
 
